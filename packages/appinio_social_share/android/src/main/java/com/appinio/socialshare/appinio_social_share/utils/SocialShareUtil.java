@@ -58,6 +58,7 @@ public class SocialShareUtil {
     private final String FACEBOOK_MESSENGER_PACKAGE = "com.facebook.orca";
     private final String FACEBOOK_MESSENGER_LITE_PACKAGE = "com.facebook.mlite";
     private final String SMS_DEFAULT_APPLICATION = "sms_default_application";
+    private final String fileProviderName=".fileprovider";
 
 
     private static CallbackManager callbackManager;
@@ -159,7 +160,7 @@ public class SocialShareUtil {
             intent.setAction(Intent.ACTION_SEND_MULTIPLE);
             ArrayList<Uri> files = new ArrayList<Uri>();
             for (int i = 0; i < filePaths.size(); i++) {
-                Uri fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", new File(filePaths.get(i)));
+                Uri fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + fileProviderName, new File(filePaths.get(i)));
                 files.add(fileUri);
             }
             intent.setType(getMimeTypeOfFile(filePaths.get(0)));
@@ -184,7 +185,7 @@ public class SocialShareUtil {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setAction(Intent.ACTION_SEND);
             if (filePath != null) {
-                Uri fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", new File(filePath));
+                Uri fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + fileProviderName, new File(filePath));
                 intent.setType(getMimeTypeOfFile(filePath));
                 intent.putExtra(Intent.EXTRA_STREAM, fileUri);
             } else {
@@ -215,13 +216,13 @@ public class SocialShareUtil {
             shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (stickerImage != null) {
                 File file = new File(stickerImage);
-                Uri stickerImageUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", file);
+                Uri stickerImageUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + fileProviderName, file);
                 shareIntent.putExtra("interactive_asset_uri", stickerImageUri);
                 activity.grantUriPermission("com.instagram.android", stickerImageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
             if (backgroundImage != null) {
                 File file1 = new File(backgroundImage);
-                Uri backgroundImageUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", file1);
+                Uri backgroundImageUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + fileProviderName, file1);
                 shareIntent.setDataAndType(backgroundImageUri, getMimeTypeOfFile(backgroundImage));
                 activity.grantUriPermission("com.instagram.android", backgroundImageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
@@ -263,7 +264,7 @@ public class SocialShareUtil {
         });
         List<SharePhoto> sharePhotos = new ArrayList<>();
         for (int i = 0; i < filePaths.size(); i++) {
-            Uri fileUri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".provider", new File(filePaths.get(i)));
+            Uri fileUri = FileProvider.getUriForFile(activity, activity.getPackageName() + fileProviderName, new File(filePaths.get(i)));
             sharePhotos.add(new SharePhoto.Builder().setImageUrl(fileUri).build());
         }
         SharePhotoContent content = new SharePhotoContent.Builder()
@@ -296,7 +297,7 @@ public class SocialShareUtil {
             intent.putExtra("com.facebook.platform.extra.APPLICATION_ID", appId);
             if (stickerImage != null) {
                 File file = new File(stickerImage);
-                Uri stickerImageFile = FileProvider.getUriForFile(activity, activity.getPackageName() + ".provider", file);
+                Uri stickerImageFile = FileProvider.getUriForFile(activity, activity.getPackageName() + fileProviderName, file);
                 intent.putExtra("interactive_asset_uri", stickerImageFile);
                 activity.grantUriPermission(packageName, stickerImageFile, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
@@ -305,7 +306,7 @@ public class SocialShareUtil {
             intent.putExtra("bottom_background_color", backgroundBottomColor);
             if (backgroundImage != null) {
                 File file1 = new File(backgroundImage);
-                Uri backgroundImageUri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".provider", file1);
+                Uri backgroundImageUri = FileProvider.getUriForFile(activity, activity.getPackageName() + fileProviderName, file1);
                 intent.setDataAndType(backgroundImageUri, getMimeTypeOfFile(backgroundImage));
                 activity.grantUriPermission(packageName, backgroundImageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
@@ -345,7 +346,7 @@ public class SocialShareUtil {
         Intent shareIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
         ArrayList<Uri> files = new ArrayList<Uri>();
         for (int i = 0; i < imagePaths.size(); i++) {
-            Uri fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", new File(imagePaths.get(i)));
+            Uri fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + fileProviderName, new File(imagePaths.get(i)));
             files.add(fileUri);
         }
         shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
@@ -368,7 +369,7 @@ public class SocialShareUtil {
     private String shareFileAndTextToPackage(String imagePath, String message, Context activity, String packageName) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         if (imagePath != null) {
-            Uri fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", new File(imagePath));
+            Uri fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + fileProviderName, new File(imagePath));
             shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
             shareIntent.setType(getMimeTypeOfFile(imagePath));
         } else {
@@ -459,4 +460,4 @@ public class SocialShareUtil {
         return appId;
     }
 
-}
+} 
